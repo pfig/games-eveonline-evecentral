@@ -4,33 +4,31 @@ use Moo 1.003001;
 use MooX::Types::MooseLike 0.25;
 use MooX::StrictConstructor 0.006;
 
-# ABSTRACT: This does what it does, and it does it well.
+# ABSTRACT: A Perl library client for the EVE Central API.
 
 
 use 5.012;
 
+
 =head1 DESCRIPTION
 
-Quick summary of what the module does, or perhaps a longer explanation.
+This module provides a client library for the API made available by
+L<http://eve-central.com/>.
+
 
 =head1 SYNOPSIS
 
     use Games::EveOnline::EveCentral;
 
-    my $foo = Games::EveOnline::EveCentral->new();
+    my $client = Games::EveOnline::EveCentral->new();
     # ...
 
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
 
 =head1 SUBROUTINES/METHODS
 
 =head2 new
 
 Just because you get new for free doesn't mean you don't have to document it :)
-=cut
 
 =head2 function2
 
@@ -44,11 +42,13 @@ sub function2 {
 
 Pedro Figueiredo, C<< <me at pedrofigueiredo.org> >>
 
+
 =head1 BUGS
 
 Please report any bugs or feature requests through the web interface at
-L<https://github.com/pfig/games-eveonline-evecentral/issues>.  I will be notified, and then
-you'll automatically be notified of progress on your bug as I make changes.
+L<https://github.com/pfig/games-eveonline-evecentral/issues>.  I will be
+notified, and then you'll automatically be notified of progress on your bug as
+I make changes.
 
 
 =head1 SUPPORT
@@ -62,7 +62,7 @@ You can also look for information at:
 
 =over 4
 
-=item * GitHub Issues
+=item * GitHub Issues (report bugs here)
 
 L<https://github.com/pfig/games-eveonline-evecentral/issues>
 
@@ -83,14 +83,21 @@ L<http://metacpan.org/module/Games::EveOnline::EveCentral>
 
 =head1 ACKNOWLEDGEMENTS
 
+=over 4
+
+=item * The people behind EVE Central.
+
+L<http://eve-central.com/>
+
+=back
+
 
 =head1 LICENSE AND COPYRIGHT
 
 Copyright 2013 Pedro Figueiredo.
 
 This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
+under the terms of the Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
 

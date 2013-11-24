@@ -4,7 +4,7 @@ use warnings;
 
 use Games::EveOnline::EveCentral;
 
-# ABSTRACT: A beautiful application
+# ABSTRACT: A simple Eve Central client to show the library in use.
 
 use 5.012;
 
@@ -13,11 +13,12 @@ use Pod::Usage 1.61;
 
 =head1 SYNOPSIS
 
-Quick summary of what the app does.
+This program will query L<http://eve-central.com/> to obtain market data. It is
+intended as a showcase for the L<Games::EveOnline::EveCentral> library.
 
 Usage:
 
-    app --help
+    evec --help
 
 =head1 DESCRIPTION
 
@@ -37,8 +38,8 @@ Pedro Figueiredo, C<< <me at pedrofigueiredo.org> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-games-eveonline-evecentral at rt.cpan.org>,
-or through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Games-EveOnline-EveCentral>.
+Please report any bugs or feature requests through the web interface at
+L<https://github.com/pfig/games-eveonline-evecentral/issues>.
 I will be notified, and then you'll automatically be notified of progress on your
 bug as I make changes.
 
@@ -54,9 +55,9 @@ You can also look for information at:
 
 =over 4
 
-=item * RT: CPAN's request tracker (report bugs here)
+=item * GitHub (report bugs here)
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Games-EveOnline-EveCentral>
+L<https://github.com/pfig/games-eveonline-evecentral/issues>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
@@ -81,8 +82,7 @@ L<http://metacpan.org/module/Games::EveOnline::EveCentral>
 Copyright 2013 Pedro Figueiredo.
 
 This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
+under the terms of the Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
 
