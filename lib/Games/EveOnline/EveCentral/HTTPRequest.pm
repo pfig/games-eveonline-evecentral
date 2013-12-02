@@ -12,6 +12,7 @@ use MooX::Types::MooseLike::Base qw(ArrayRef Enum HashRef Str);
 use 5.012;
 
 use HTTP::Request 6.0;
+use HTTP::Headers 6.05;
 use Readonly 1.03;
 # FIXME: Add version
 use URI::Escape qw(uri_escape_utf8);
@@ -33,8 +34,8 @@ has 'path' => (
 
 has 'headers' => (
   is => 'ro',
-  isa => ArrayRef[HashRef],
-  default => sub { [{}] }
+  isa => HashRef,
+  default => sub { {} }
 );
 
 has 'content' => (
@@ -73,8 +74,8 @@ This method creates an HTTP::Request object.
 sub http_request {
   my $self = shift;
   my $method = $self->method;
-  my $path = _urlencode($self->path);
-  my $headers = $self->headers;
+  my $path = $self->_urlencode($self->path);
+  my $headers = $self->_create_headers($self->headers);
   my $content = $self->content;
 
   my $uri = "$BASE_URL/$path";
@@ -94,6 +95,23 @@ URL-encode a given path.
 sub _urlencode {
   my ($self, $unencoded) = @_;
   return uri_escape_utf8($unencoded, '^A-Za-z0-9_-');
+}
+
+=head2 _create_headers
+
+Create an HTTP::Headers object from a hash.
+
+=cut
+
+sub _create_headers {
+  my ($self, $headers) = @_;
+  my $http_headers = HTTP::Headers->new;
+
+  while ( my ( $k, $v ) = each %$headers ) {
+    $http_headers->header( $k => $v );
+  }
+
+  return $http_headers;
 }
 
 =end private
