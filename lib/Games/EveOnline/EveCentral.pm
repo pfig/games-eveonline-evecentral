@@ -15,6 +15,8 @@ use 5.012;
 This module provides a client library for the API made available by
 L<http://eve-central.com/>.
 
+Full API documentation is available at
+L<http://dev.eve-central.com/evec-api/start>.
 
 =head1 SYNOPSIS
 
