@@ -14,8 +14,7 @@ use 5.012;
 use HTTP::Request 6.0;
 use HTTP::Headers 6.05;
 use Readonly 1.03;
-# FIXME: Add version
-use URI::Escape qw(uri_escape_utf8);
+use URI::Escape 3.31 qw(uri_escape_utf8);
 
 
 Readonly::Scalar my $BASE_URL => "http://api.eve-central.com/api";
