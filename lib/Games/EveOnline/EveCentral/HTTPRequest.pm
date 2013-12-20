@@ -37,6 +37,7 @@ has 'headers' => (
   default => sub { {} }
 );
 
+# if you're using POST
 has 'content' => (
   is => 'ro',
   isa => Str,
@@ -56,9 +57,9 @@ no strict 'vars'
 
   my $http_request = Games::EveOnline::EveCentral::HTTPRequest->new(
     method => 'GET',
-    path => $self->api_method,
+    path => $api_method,
     headers => $headers,
-    content => $content
+    content => $content # if using post
   )->http_request;
 
 
@@ -75,7 +76,7 @@ sub http_request {
   my $method = $self->method;
   my $path = $self->_urlencode($self->path);
   my $headers = $self->_create_headers($self->headers);
-  my $content = $self->content;
+  my $content = $method eq 'POST'? $self->content : undef;
 
   my $uri = "$BASE_URL/$path";
   my $request = HTTP::Request->new($method, $uri, $headers, $content);
