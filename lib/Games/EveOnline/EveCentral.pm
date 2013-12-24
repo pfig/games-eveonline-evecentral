@@ -11,6 +11,7 @@ use Sub::Quote 1.003001;
 use 5.012;
 
 use LWP::UserAgent::Determined 1.06;
+use Try::Tiny 0.18;
 use XML::LibXML;
 
 
@@ -55,11 +56,33 @@ L<http://dev.eve-central.com/evec-api/start>.
 
   my $client = Games::EveOnline::EveCentral->new;
 
-=head2 function2
+=head2 marketstat
+
+  my $xml = $client->marketstat(
+    Games::EveOnline::EveCentral::Request::MarketStat->new(
+      type_id => 34, # or [34, 35]. Mandatory.
+      hours => 1, # defaults to 24
+      min_q => 10000, # defaults to 1
+      system => 30000142,
+      regions => 10000002, # or [10000002, 10000003],
+    )->request
+  );
 
 =cut
 
-sub function2 {
+sub marketstat {
+  my ($self, $request) = @_;
+
+  my $response;
+  try {
+    $response = $self->ua->get($request);
+  }
+  catch {
+    print STDERR "HTTP request failed: $_";
+  };
+  return undef unless $response->is_success;
+
+  return $response->decoded_content;
 }
 
 =begin private
