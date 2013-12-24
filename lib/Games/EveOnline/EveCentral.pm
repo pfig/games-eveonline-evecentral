@@ -3,12 +3,32 @@ package Games::EveOnline::EveCentral;
 use Moo 1.003001;
 use MooX::Types::MooseLike 0.25;
 use MooX::StrictConstructor 0.006;
+use Sub::Quote 1.003001;
 
 # ABSTRACT: A Perl library client for the EVE Central API.
 
 
 use 5.012;
 
+use LWP::UserAgent::Determined 1.06;
+use XML::LibXML;
+
+
+has 'ua' => (
+  is => 'lazy',
+  isa => quote_sub(q{
+    die 'Not a LWP::UserAgent::Determined'
+      unless UNIVERSAL::isa($_[0], 'LWP::UserAgent::Determined');
+  })
+);
+
+has 'libxml' => (
+  is => 'lazy',
+  isa => quote_sub(q{
+    die 'Not a XML::LibXML'
+      unless UNIVERSAL::isa($_[0], 'XML::LibXML');
+  })
+);
 
 =head1 DESCRIPTION
 
@@ -30,7 +50,9 @@ L<http://dev.eve-central.com/evec-api/start>.
 
 =head2 new
 
-Just because you get new for free doesn't mean you don't have to document it :)
+  use Games::EveOnline::EveCentral;
+
+  my $client = Games::EveOnline::EveCentral->new;
 
 =head2 function2
 
@@ -38,6 +60,23 @@ Just because you get new for free doesn't mean you don't have to document it :)
 
 sub function2 {
 }
+
+=begin private
+
+=cut
+
+sub _build_ua {
+  my $ua = LWP::UserAgent::Determined->new;
+  $ua->env_proxy;
+
+  return $ua;
+}
+
+sub _build_libxml {
+  return XML::LibXML->new;
+}
+
+=end private
 
 
 =head1 AUTHOR
