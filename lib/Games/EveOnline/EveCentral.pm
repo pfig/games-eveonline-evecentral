@@ -38,15 +38,16 @@ L<http://eve-central.com/>.
 Full API documentation is available at
 L<http://dev.eve-central.com/evec-api/start>.
 
+
 =head1 SYNOPSIS
 
     use Games::EveOnline::EveCentral;
 
-    my $client = Games::EveOnline::EveCentral->new();
+    my $client = Games::EveOnline::EveCentral->new;
     # ...
 
 
-=head1 SUBROUTINES/METHODS
+=head1 METHODS
 
 =head2 new
 
