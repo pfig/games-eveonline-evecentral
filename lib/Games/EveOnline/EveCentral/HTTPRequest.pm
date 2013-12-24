@@ -21,7 +21,7 @@ Readonly::Scalar my $BASE_URL => "http://api.eve-central.com/api";
 
 has 'method' => (
   is => 'ro',
-  isa => Enum['GET', 'POST'],
+  isa => Enum['GET'],
   required => 1
 );
 
@@ -35,13 +35,6 @@ has 'headers' => (
   is => 'ro',
   isa => HashRef,
   default => sub { {} }
-);
-
-# if you're using POST
-has 'content' => (
-  is => 'ro',
-  isa => Str,
-  default => ''
 );
 
 
@@ -76,10 +69,9 @@ sub http_request {
   my $method = $self->method;
   my $path = $self->_urlencode($self->path);
   my $headers = $self->_create_headers($self->headers);
-  my $content = $method eq 'POST'? $self->content : undef;
 
   my $uri = "$BASE_URL/$path";
-  my $request = HTTP::Request->new($method, $uri, $headers, $content);
+  my $request = HTTP::Request->new($method, $uri, $headers);
 
   return $request;
 }
