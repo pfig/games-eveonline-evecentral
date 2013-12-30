@@ -118,39 +118,38 @@ sub _build__path {
     for my $type_id (@$type_ids) {
       $path .= "typeid=$type_id&";
     }
+    $path =~ s/&$//;
   }
   else {
-    $path .= "typeid=$type_ids&";
+    $path .= "typeid=$type_ids";
   }
 
   if (defined $self->hours) {
     my $hours = $self->hours;
-    $path .= "hours=$hours&";
+    $path .= "&hours=$hours";
   }
 
   if (defined $self->min_q) {
     my $min_q = $self->min_q;
-    $path .= "minQ=$min_q&";
+    $path .= "&minQ=$min_q";
   }
 
   my $system = $self->system;
   if (defined $system && $system > 0) {
-    $path .= "usesystem=$system&";
+    $path .= "&usesystem=$system";
   }
 
   my $regions = $self->regions;
   if (defined $regions && $regions > 0) {
     if (ref $regions eq 'ARRAY') {
       for my $region (@$regions) {
-        $path .= "regionlimit=$region&";
+        $path .= "&regionlimit=$region";
       }
     }
     else {
-      $path .= "regionlimit=$regions";
+      $path .= "&regionlimit=$regions";
     }
   }
-
-  $path =~ s/&$//;
 
   return $path;
 }
