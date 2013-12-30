@@ -85,6 +85,35 @@ sub marketstat {
   return $response->decoded_content;
 }
 
+=head2 quicklook
+
+  my $xml = $client->quicklook(
+    Games::EveOnline::EveCentral::Request::QuickLook->new(
+      type_id => 34, # Mandatory.
+      hours => 1, # defaults to 360
+      min_q => 10000, # defaults to 1
+      system => 30000142,
+      regions => 10000002, # or [10000002, 10000003],
+    )->request
+  );
+
+=cut
+
+sub quicklook {
+  my ($self, $request) = @_;
+
+  my $response;
+  try {
+    $response = $self->ua->get($request);
+  }
+  catch {
+    print STDERR "HTTP request failed: $_";
+  };
+  return undef unless $response->is_success;
+
+  return $response->decoded_content;
+}
+
 =begin private
 
 =cut
