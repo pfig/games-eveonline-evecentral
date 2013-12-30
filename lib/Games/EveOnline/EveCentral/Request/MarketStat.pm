@@ -16,7 +16,7 @@ extends 'Games::EveOnline::EveCentral::Request';
 use Readonly 1.03;
 
 
-Readonly::Scalar my $ENDPOINT => "marketstat";
+Readonly::Scalar my $ENDPOINT => 'marketstat';
 
 
 has 'hours' => (
