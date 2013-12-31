@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 17;
+use Test::More tests => 18;
 use Test::Exception;
 use Error;
 
@@ -18,6 +18,8 @@ is($o->system, -1);
 
 my $expected_path = 'marketstat?typeid=34&hours=24&minQ=1';
 is($o->_path, $expected_path);
+
+is($o->request->method, 'GET');
 
 throws_ok {
   eval {
