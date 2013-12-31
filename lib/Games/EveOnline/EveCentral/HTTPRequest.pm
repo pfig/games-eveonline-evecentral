@@ -3,7 +3,7 @@ package Games::EveOnline::EveCentral::HTTPRequest;
 use Moo 1.003001;
 use MooX::Types::MooseLike 0.25;
 use MooX::StrictConstructor 0.006;
-use MooX::Types::MooseLike::Base qw(ArrayRef Enum HashRef Str);
+use MooX::Types::MooseLike::Base qw(AnyOf ArrayRef Enum HashRef Str Undef);
 
 
 # ABSTRACT: Internal use class to create HTTP::Request objects.
@@ -21,7 +21,7 @@ Readonly::Scalar my $BASE_URL => "http://api.eve-central.com/api";
 
 has 'method' => (
   is => 'ro',
-  isa => Enum['GET'],
+  isa => Enum['GET', 'POST'],
   required => 1
 );
 
@@ -37,6 +37,12 @@ has 'headers' => (
   default => sub { {} }
 );
 
+has 'content' => (
+  is => 'ro',
+  isa => AnyOf[ArrayRef[Str], Undef],
+  default => sub { [] }
+);
+
 
 =head1 DESCRIPTION
 
@@ -49,10 +55,10 @@ no strict 'vars'
 =head1 SYNOPSIS
 
   my $http_request = Games::EveOnline::EveCentral::HTTPRequest->new(
-    method => 'GET',
+    method => 'GET', # or 'POST'
     path => $api_method,
     headers => $headers,
-    content => $content # if using post
+    content => $content # if using POST, []
   )->http_request;
 
 
@@ -69,9 +75,10 @@ sub http_request {
   my $method = $self->method;
   my $path = $self->_urlencode($self->path);
   my $headers = $self->_create_headers($self->headers);
+  my $content = $self->content;
 
   my $uri = "$BASE_URL/$path";
-  my $request = HTTP::Request->new($method, $uri, $headers);
+  my $request = HTTP::Request->new($method, $uri, $headers, $content);
 
   return $request;
 }

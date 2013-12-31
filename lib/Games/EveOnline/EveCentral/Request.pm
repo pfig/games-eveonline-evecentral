@@ -36,11 +36,13 @@ GET as the HTTP method.
 =cut
 
 sub http_request {
-  my ($self, $path) = @_;
+  my ($self, $path, $content) = @_;
+  my $method = (defined $content && ref $content eq 'ARRAY')? 'POST' : 'GET';
 
   return Games::EveOnline::EveCentral::HTTPRequest->new(
-    method => 'GET',
-    path => $path
+    method => $method,
+    path => $path,
+    content => $content
   )->http_request;
 }
 

@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 9;
+use Test::More tests => 10;
 use Test::Exception;
 use Error;
 
@@ -8,6 +8,12 @@ use Games::EveOnline::EveCentral::HTTPRequest;
 
 my $o = Games::EveOnline::EveCentral::HTTPRequest->new(
   method => 'GET',
+  path => 'frobnitzer'
+);
+isa_ok($o, 'Games::EveOnline::EveCentral::HTTPRequest');
+
+my $o = Games::EveOnline::EveCentral::HTTPRequest->new(
+  method => 'POST',
   path => 'frobnitzer'
 );
 isa_ok($o, 'Games::EveOnline::EveCentral::HTTPRequest');
@@ -33,7 +39,7 @@ throws_ok {
 throws_ok {
   eval {
     $o = Games::EveOnline::EveCentral::HTTPRequest->new(
-      method => 'POST',
+      method => 'PUT',
       path => 'frobnitzer'
     );
   };
