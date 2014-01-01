@@ -4,7 +4,7 @@ BEGIN { chdir 't' if -d 't' }
 
 use lib 'lib';
 
-use Test::More tests => 1;
+use Test::More tests => 2;
 use Test::Mock::Class 0.0303 qw(:all);
 
 use Games::EveOnline::EveCentral;

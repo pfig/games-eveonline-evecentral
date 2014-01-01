@@ -33,7 +33,7 @@ my $parser = $client->libxml;
 my $doc = $parser->parse_string($xml);
 
 my $type_id = $doc->findvalue('//quicklook/item/text()');
-is(scalar $type_id, '34');
+is($type_id, '34');
 
 my @jita_orders = $doc->findnodes(
   '//quicklook/sell_orders/order/station[text() = "60003760"]'

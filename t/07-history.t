@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 13;
+use Test::More tests => 14;
 use Test::Exception;
 use Error;
 
@@ -11,6 +11,7 @@ my $o = Games::EveOnline::EveCentral::Request::History->new(
   bid => 'buy'
 );
 isa_ok($o, 'Games::EveOnline::EveCentral::Request::History');
+is($o->request->method, 'GET');
 
 $o = Games::EveOnline::EveCentral::Request::History->new(
   type_id => 34,
