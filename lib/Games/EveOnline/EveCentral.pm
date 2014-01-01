@@ -12,7 +12,8 @@ use 5.012;
 
 use LWP::UserAgent::Determined 1.06;
 use Try::Tiny 0.18;
-use XML::LibXML;
+use XML::LibXML 2.0108;
+use JSON 2.90;
 
 
 has 'ua' => (
