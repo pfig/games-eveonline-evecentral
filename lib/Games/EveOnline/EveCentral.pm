@@ -96,6 +96,26 @@ sub quicklook {
 
   return $self->_do_http_request($request);
 }
+
+=head2 quicklookpath
+
+  my $xml = $client->quicklookpath(
+    Games::EveOnline::EveCentral::Request::QuickLookPath->new(
+      type_id => 34, # Mandatory
+      from_system => 'Jita', # or 30000142, mandatory
+      to_system => 'Amarr', # or 30002187, mandatory
+      hours => 37, # Defaults to 360
+      min_q => 100 # Defaults to 1
+    )->request
+  );
+
+=cut
+
+sub quicklookpath {
+  my ($self, $request) = @_;
+
+  return $self->_do_http_request($request);
+}
 =begin private
 
 =cut
