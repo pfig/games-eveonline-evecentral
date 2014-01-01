@@ -22,7 +22,7 @@ $lwp->mock_return(
 my $client = Games::EveOnline::EveCentral->new(ua => $lwp);
 isa_ok($client, 'Games::EveOnline::EveCentral');
 
-my $xml = $client->marketstat(
+my $xml = $client->quicklook(
   Games::EveOnline::EveCentral::Request::QuickLook->new(
     type_id => 34
   )->request
