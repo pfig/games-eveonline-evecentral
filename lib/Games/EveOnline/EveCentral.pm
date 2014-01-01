@@ -145,6 +145,21 @@ sub history {
   return $self->_do_http_request($request);
 }
 
+=head2 evemon
+
+  my $xml = $client->evemon(
+    Games::EveOnline::EveCentral::Request::EVEMon->new->request;
+  );
+
+=cut
+
+sub evemon {
+  my ($self, $request) = @_;
+
+  return $self->_do_http_request($request);
+}
+
+
 =begin private
 
 =cut
