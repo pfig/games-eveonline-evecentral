@@ -32,6 +32,15 @@ has 'libxml' => (
   })
 );
 
+has 'jsonparser' => (
+  is => 'lazy',
+  isa => quote_sub(q{
+    die 'Not a JSON'
+      unless UNIVERSAL::isa($_[0], 'JSON');
+  })
+);
+
+
 =head1 DESCRIPTION
 
 This module provides a client library for the API made available by
@@ -116,6 +125,26 @@ sub quicklookpath {
 
   return $self->_do_http_request($request);
 }
+
+=head2 history
+
+  my $json = $client->history(
+    Games::EveOnline::EveCentral::Request::History->new(
+      type_id => 34, # Mandatory
+      location_type => 'system', # or 'region'.
+      location => 'Jita', # Or 30000142, must be present if location_type is
+      bid => 'buy' # Or 'sell', mandatory
+    )->request
+  );
+
+=cut
+
+sub history {
+  my ($self, $request) = @_;
+
+  return $self->_do_http_request($request);
+}
+
 =begin private
 
 =cut
@@ -144,6 +173,10 @@ sub _build_ua {
 
 sub _build_libxml {
   return XML::LibXML->new;
+}
+
+sub _build_jsonparser {
+  return JSON->new->utf8;
 }
 
 =end private
