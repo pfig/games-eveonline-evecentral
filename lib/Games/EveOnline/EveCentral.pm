@@ -74,16 +74,7 @@ L<http://dev.eve-central.com/evec-api/start>.
 sub marketstat {
   my ($self, $request) = @_;
 
-  my $response;
-  try {
-    $response = $self->ua->get($request);
-  }
-  catch {
-    print STDERR "HTTP request failed: $_";
-  };
-  return undef unless $response->is_success;
-
-  return $response->decoded_content;
+  return $self->_do_http_request($request);
 }
 
 =head2 quicklook
@@ -103,6 +94,15 @@ sub marketstat {
 sub quicklook {
   my ($self, $request) = @_;
 
+  return $self->_do_http_request($request);
+}
+=begin private
+
+=cut
+
+sub _do_http_request {
+  my ($self, $request) = @_;
+
   my $response;
   try {
     $response = $self->ua->get($request);
@@ -114,10 +114,6 @@ sub quicklook {
 
   return $response->decoded_content;
 }
-
-=begin private
-
-=cut
 
 sub _build_ua {
   my $ua = LWP::UserAgent::Determined->new;
