@@ -148,7 +148,7 @@ sub history {
 =head2 evemon
 
   my $xml = $client->evemon(
-    Games::EveOnline::EveCentral::Request::EVEMon->new->request;
+    Games::EveOnline::EveCentral::Request::EVEMon->new->request
   );
 
 =cut
