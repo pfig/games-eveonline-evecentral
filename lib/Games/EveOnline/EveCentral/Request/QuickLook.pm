@@ -60,6 +60,8 @@ has '_path' => (
 This class is used to create HTTP::Request objects suitable to call the
 `quicklook` method on EVE Central.
 
+Please take care to only use valid type ids.
+
 Examples:
 
 =over 4
@@ -81,8 +83,6 @@ no strict 'vars'
     system => 30000142,
     regions => 10000002, # or [10000002, 10000003],
   )->request;
-
-Please take care to only use valid type ids.
 
 
 =head1 METHODS

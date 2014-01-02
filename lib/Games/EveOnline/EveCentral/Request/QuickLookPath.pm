@@ -65,6 +65,8 @@ has '_content' => (
 This class is used to create HTTP::Request objects suitable to call the
 `quicklookpath` method on EVE Central.
 
+Please take care to only use valid type ids.
+
 Examples:
 
 =over 4
@@ -86,8 +88,6 @@ no strict 'vars'
     from_system => 30000142, # or 'Jita'. Mandatory.
     to_system => 30002187, # or 'Amarr'. Mandatory.
   )->request;
-
-Please take care to only use valid type ids.
 
 
 =head1 METHODS

@@ -42,6 +42,8 @@ has '_path' => (
 This class is used to create HTTP::Request objects suitable to call the
 `route` method on EVE Central.
 
+Please take care to only use valid type ids.
+
 Examples:
 
 =over 4
@@ -60,8 +62,6 @@ no strict 'vars'
     from_system => 'Jita', # Or 30000142, mandatory
     to_system => 'Amarr' # Or 30002187, mandatory
   )->request;
-
-Please take care to only use valid type ids.
 
 
 =head1 METHODS
