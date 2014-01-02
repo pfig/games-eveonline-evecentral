@@ -159,6 +159,22 @@ sub evemon {
   return $self->_do_http_request($request);
 }
 
+=head2 route
+
+  my $json = $client->route(
+    Games::EveOnline::EveCentral::Request::Route->new(
+      from_system => 'Jita', # Or 30000142, mandatory
+      to_system => 'Amarr', # Or 30002187, mandatory
+    )->request
+  );
+
+=cut
+
+sub route {
+  my ($self, $request) = @_;
+
+  return $self->_do_http_request($request);
+}
 
 =begin private
 
