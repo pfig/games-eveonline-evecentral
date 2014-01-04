@@ -15,6 +15,8 @@ use Try::Tiny 0.18;
 use XML::LibXML 2.0108;
 use JSON 2.90;
 
+use Games::EveOnline::EveCentral::Response::MarketStat;
+use Games::EveOnline::EveCentral::Response::MarketStat::Datum;
 
 has 'ua' => (
   is => 'lazy',
@@ -66,7 +68,7 @@ L<http://dev.eve-central.com/evec-api/start>.
 
   my $client = Games::EveOnline::EveCentral->new;
 
-=head2 marketstat
+=head2 marketstat_xml
 
   my $xml = $client->marketstat(
     Games::EveOnline::EveCentral::Request::MarketStat->new(
@@ -80,10 +82,68 @@ L<http://dev.eve-central.com/evec-api/start>.
 
 =cut
 
-sub marketstat {
+sub marketstat_xml {
   my ($self, $request) = @_;
 
   return $self->_do_http_request($request);
+}
+
+=head2 marketstat
+
+  # $response will be a reference to an array of
+  # Games::EveOnline::EveCentral::Response::MarketStat
+  my $response = $client->marketstat(
+    Games::EveOnline::EveCentral::Request::MarketStat->new(
+      type_id => 34, # or [34, 35]. Mandatory.
+      hours => 1, # defaults to 24
+      min_q => 10000, # defaults to 1
+      system => 30000142,
+      regions => 10000002, # or [10000002, 10000003],
+    )->request
+  );
+
+=cut
+
+sub marketstat {
+  my ($self, $request) = @_;
+  my @response;
+
+  my $xml = $self->marketstat_xml($request);
+  return undef unless defined $xml;
+
+  my $doc = $self->libxml->parse_string($xml);
+
+  for my $stat ($doc->findnodes('//marketstat/type')) {
+    my $type_id = $stat->findvalue('//type/@id');
+    my ($buy, $sell, $all) = $self->_build_marketstat_data($stat);
+    push @response, Games::EveOnline::EveCentral::Response::MarketStat->new(
+      type_id => $type_id,
+      buy => $buy,
+      sell => $sell,
+      all => $all
+    );
+  }
+
+  return \@response;
+}
+
+sub _build_marketstat_data {
+  my ($self, $stat) = @_;
+  my @data;
+
+  for my $datum (qw(buy sell all)) {
+    push @data, Games::EveOnline::EveCentral::Response::MarketStat::Datum->new(
+      volume => $stat->findvalue("//type/$datum/volume"),
+      average => $stat->findvalue("//type/$datum/avg"),
+      max => $stat->findvalue("//type/$datum/max"),
+      min => $stat->findvalue("//type/$datum/min"),
+      stddev => $stat->findvalue("//type/$datum/stddev"),
+      median => $stat->findvalue("//type/$datum/median"),
+      percentile => $stat->findvalue("//type/$datum/percentile")
+    );
+  }
+
+  return @data;
 }
 
 =head2 quicklook
