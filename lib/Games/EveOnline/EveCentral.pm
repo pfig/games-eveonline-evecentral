@@ -12,7 +12,7 @@ use 5.012;
 
 use LWP::UserAgent::Determined 1.06;
 use Try::Tiny 0.18;
-use XML::LibXML 2.0108;
+use XML::Simple;
 use JSON 2.90;
 
 use Games::EveOnline::EveCentral::Response::MarketStat;
@@ -26,11 +26,11 @@ has 'ua' => (
   })
 );
 
-has 'libxml' => (
+has 'xml' => (
   is => 'lazy',
   isa => quote_sub(q{
-    die 'Not a XML::LibXML'
-      unless UNIVERSAL::isa($_[0], 'XML::LibXML');
+    die 'Not a XML::Simple'
+      unless UNIVERSAL::isa($_[0], 'XML::Simple');
   })
 );
 
@@ -111,17 +111,18 @@ sub marketstat {
   my $xml = $self->marketstat_xml($request);
   return undef unless defined $xml;
 
-  my $doc = $self->libxml->parse_string($xml);
+  my $doc = $self->xml->XMLin($xml);
 
-  for my $stat ($doc->findnodes('//marketstat/type')) {
-    my $type_id = $stat->findvalue('//type/@id');
-    my ($buy, $sell, $all) = $self->_build_marketstat_data($stat);
-    push @response, Games::EveOnline::EveCentral::Response::MarketStat->new(
-      type_id => $type_id,
-      buy => $buy,
-      sell => $sell,
-      all => $all
-    );
+  return undef unless defined $doc->{marketstat}->{type};
+  
+  foreach my $type_id ( keys %{ $doc->{marketstat}->{type} } ) {
+      my ($buy, $sell, $all) = $self->_build_marketstat_data( $doc->{marketstat}->{type}->{$type_id} );
+      push @response, Games::EveOnline::EveCentral::Response::MarketStat->new(
+        type_id => $type_id,
+        buy     => $buy,
+        sell    => $sell,
+        all     => $all,
+      );
   }
 
   return \@response;
@@ -133,13 +134,13 @@ sub _build_marketstat_data {
 
   for my $datum (qw(buy sell all)) {
     push @data, Games::EveOnline::EveCentral::Response::MarketStat::Datum->new(
-      volume => $stat->findvalue("//type/$datum/volume"),
-      average => $stat->findvalue("//type/$datum/avg"),
-      max => $stat->findvalue("//type/$datum/max"),
-      min => $stat->findvalue("//type/$datum/min"),
-      stddev => $stat->findvalue("//type/$datum/stddev"),
-      median => $stat->findvalue("//type/$datum/median"),
-      percentile => $stat->findvalue("//type/$datum/percentile")
+      volume      => $stat->{$datum}->{volume},
+      average     => $stat->{$datum}->{avg},
+      max         => $stat->{$datum}->{max},
+      min         => $stat->{$datum}->{min},
+      stddev      => $stat->{$datum}->{stddev},
+      median      => $stat->{$datum}->{median},
+      percentile  => $stat->{$datum}->{percentile},
     );
   }
 
@@ -245,11 +246,12 @@ sub _do_http_request {
 
   my $response;
   try {
-    $response = $self->ua->get($request);
+    $response = $self->ua->get($request->url->as_string);
   }
   catch {
     print STDERR "HTTP request failed: $_";
   };
+
   return undef unless $response->is_success;
 
   return $response->decoded_content;
@@ -262,8 +264,8 @@ sub _build_ua {
   return $ua;
 }
 
-sub _build_libxml {
-  return XML::LibXML->new;
+sub _build_xml {
+  return XML::Simple->new( ForceArray => ['type', 'mineral','order'], );
 }
 
 sub _build_jsonparser {

@@ -29,20 +29,20 @@ my $xml = $client->quicklookpath(
     to_system => 'Amarr'
   )->request
 );
-my $parser = $client->libxml;
-my $doc = $parser->parse_string($xml);
+my $parser = $client->xml;
+my $doc = $parser->XMLin($xml);
 
-my $type_id = $doc->findvalue('//quicklook/item/text()');
+my $type_id = $doc->{quicklook}->{item};
 is($type_id, '34');
 
-my @jita_orders = $doc->findnodes(
-  '//quicklook/sell_orders/order/station[text() = "60003760"]'
-);
+my @jita_orders = map { $doc->{quicklook}->{sell_orders}->{order}->{$_} 
+                        if $doc->{quicklook}->{sell_orders}->{order}->{$_}->{station} == 60003760 } 
+                     keys %{ $doc->{quicklook}->{sell_orders}->{order} };
 isnt(scalar @jita_orders, 0);
 
-my @amarr_orders = $doc->findnodes(
-  '//quicklook/sell_orders/order/station[text() = "60008494"]'
-);
+my @amarr_orders = map { $doc->{quicklook}->{sell_orders}->{order}->{$_} 
+                        if $doc->{quicklook}->{sell_orders}->{order}->{$_}->{station} == 60008494 } 
+                     keys %{ $doc->{quicklook}->{sell_orders}->{order} };
 isnt(scalar @amarr_orders, 0);
 
 $lwp->mock_tally;

@@ -25,11 +25,11 @@ isa_ok($client, 'Games::EveOnline::EveCentral');
 my $xml = $client->evemon(
   Games::EveOnline::EveCentral::Request::EVEMon->new->request
 );
-my $parser = $client->libxml;
-my $doc = $parser->parse_string($xml);
+my $parser = $client->xml;
+my $doc = $parser->XMLin($xml);
 
-my @type_id = $doc->findnodes('//minerals/mineral');
-is(scalar @type_id, 8);
+my $type_id = $doc->{mineral};
+is(scalar keys %$type_id, 8);
 
 
 $lwp->mock_tally;

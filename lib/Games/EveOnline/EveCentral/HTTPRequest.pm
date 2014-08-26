@@ -93,6 +93,8 @@ URL-encode a given path.
 
 sub _urlencode {
   my ($self, $unencoded) = @_;
+  
+  return $unencoded;
   return uri_escape_utf8($unencoded, '^A-Za-z0-9_-');
 }
 
