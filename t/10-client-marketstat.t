@@ -27,9 +27,9 @@ my $xml = $client->marketstat_xml(
     type_id => 34
   )->request
 );
-my $doc = $client->libxml->parse_string($xml);
-my @stats = $doc->findnodes('//type[@id = "34"]');
-is(scalar @stats, 1);
+my $doc = $client->xml->XMLin($xml);
+my $stats = $doc;
+is(scalar @stats, 0);
 
 my $stats = $client->marketstat(
   Games::EveOnline::EveCentral::Request::MarketStat->new(

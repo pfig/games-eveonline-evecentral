@@ -27,9 +27,9 @@ my $xml = $client->quicklook(
     type_id => 34
   )->request
 );
-my $parser = $client->libxml;
-my $doc = $parser->parse_string($xml);
-my $type_id = $doc->findvalue('//quicklook/item/text()');
+my $parser = $client->xml;
+my $doc = $parser->XMLin($xml);
+my $type_id = $doc->{quicklook}->{item};
 is(scalar $type_id, '34');
 
 $lwp->mock_tally;

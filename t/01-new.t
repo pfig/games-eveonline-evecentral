@@ -8,4 +8,4 @@ my $o = Games::EveOnline::EveCentral->new;
 isa_ok($o, 'Games::EveOnline::EveCentral');
 
 isa_ok($o->ua, 'LWP::UserAgent::Determined');
-isa_ok($o->libxml, 'XML::LibXML');
+isa_ok($o->xml, 'XML::Simple');
